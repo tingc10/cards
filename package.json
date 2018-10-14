@@ -1,0 +1,19 @@
+{
+  "name": "cards",
+  "version": "1.0.0",
+  "description": "Standard deck of cards",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tingc10/cards.git"
+  },
+  "author": "Ting Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tingc10/cards/issues"
+  },
+  "homepage": "https://github.com/tingc10/cards#readme"
+}
