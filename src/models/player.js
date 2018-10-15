@@ -1,20 +1,17 @@
-/* TABLE */
-class Table() {
-  constructor() {
-
-  }
-}
-
 /* PLAYER */
-class Player() {
-  constructor() {
-    this.hand = [];
-    this.selectedCardIndices = [];
-    this.id = '';
+export class Player {
+  constructor({ id = 'player', hand = [] } = {}) {
+    this.hand = hand;
+    this.selectedCards = [];
+    this.id = id;
   }
 
   takeCard(card) {
     this.hand.push(card);
+  }
+
+  takePile(pile = []) {
+    this.hand = this.hand.concat(pile);
   }
 
   clearHand() {
@@ -22,30 +19,40 @@ class Player() {
   }
 
   dealSelectedCards() {
-    const dealtCards = [];
-    this.selectedCardIndices()
+    const dealtCards = this.selectedCards;
+    this.selectedCards = [];
     return dealtCards;
   }
 
-  getCard({ type, name }) {
-    return this.hand.findIndex((card) => {
+  static getCardIndexWithAttributes(pile, { type, name }) {
+    return pile.findIndex((card) => {
       return card.type === type && card.name === name;
     });
   }
 
-  selectCardWithAttributes() {
-
+  static shiftCardBetweenPiles(fromPile, toPile, attributes = {}, index = null) {
+    const selectedCardIndex = index ? index : Player.getCardIndexWithAttributes(fromPile, attributes);
+    if (selectedCardIndex !== -1 && fromPile[selectedCardIndex]) {
+      const selectedCard = fromPile.splice(selectedCardIndex, 1)[0];
+      toPile.push(selectedCard);
+      return selectedCard;
+    }
+    return null;
   }
 
-  deselectCardWithAttributes() {
-
+  selectCardWithAttributes(attributes) {
+    return Player.shiftCardBetweenPiles(this.hand, this.selectedCards, attributes);
   }
 
-  selectCardAtIndex() {
-
+  deselectCardWithAttributes(attributes) {
+    return Player.shiftCardBetweenPiles(this.selectedCards, this.hand, attributes);
   }
 
-  deselectCardAtIndex() {
+  selectCardAtIndex(index) {
+    return Player.shiftCardBetweenPiles(this.hand, this.selectedCards, null, index);
+  }
 
+  deselectCardAtIndex(index) {
+    return Player.shiftCardBetweenPiles(this.selectedCards, this.hand, null, index);
   }
 }

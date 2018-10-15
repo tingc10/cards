@@ -5,11 +5,13 @@ import {
   JOKER_CARD_VALUE,
 
 } from '../constants/card-meta';
+import { Card } from './card';
 
-class StandardDeck {
+export class StandardDeck {
   constructor({ includeJoker = false } = {}) {
     this.cards = StandardDeck.generateDeck(includeJoker);
     this.shuffleDeck();
+    this.length = this.cards.length;
   }
 
   static generateDeck(includeJoker) {
@@ -44,11 +46,14 @@ class StandardDeck {
   getRandomCard() {
     const totalCards = this.cards.length;
     const randomCardIndex = Math.floor(Math.random() * totalCards);
-    return this.cards.splice(randomCardIndex, 1)[0];
+    const card = this.cards.splice(randomCardIndex, 1)[0];
+    this.length = this.cards.length;
+    return card;
   }
 
   dealCardToPlayer(player) {
     const card = this.cards.pop();
+    this.length = this.cards.length;
     card.assignPlayer(player);
     return card;
   }

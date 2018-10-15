@@ -1,0 +1,6 @@
+/* TABLE */
+class Table() {
+  constructor() {
+
+  }
+}
