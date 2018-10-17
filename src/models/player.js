@@ -4,6 +4,8 @@ export class Player {
     this.hand = hand;
     this.selectedCards = [];
     this.id = id;
+    this.nextMove = null;
+    this.moveValidator = null;
   }
 
   takeCard(card) {
@@ -18,10 +20,10 @@ export class Player {
     this.hand = [];
   }
 
-  dealSelectedCards() {
+  pluckSelectedCards() {
     const dealtCards = this.selectedCards;
     this.selectedCards = [];
-    return dealtCards;
+    return dealtCards
   }
 
   static getCardIndexWithAttributes(pile, { type, name }) {
@@ -54,5 +56,20 @@ export class Player {
 
   deselectCardAtIndex(index) {
     return Player.shiftCardBetweenPiles(this.selectedCards, this.hand, null, index);
+  }
+
+  assignNextMove(resolve, moveValidator) {
+    this.nextMove = resolve;
+    this.moveValidator = moveValidator;
+  }
+
+  playNextMoveWithSelectedCards() {
+    if (!this.nextMove) return;
+    if (this.moveValidator && this.moveValidator(this.selectedCards)) {
+      const dealtCards = this.pluckSelectedCards();
+      this.nextMove(dealtCards);
+    } else {
+      console.error('Cannot validate cards or invalid move');
+    }
   }
 }

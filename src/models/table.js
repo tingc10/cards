@@ -1,6 +1,11 @@
+import { Deck } from './deck';
 /* TABLE */
-class Table() {
+export class Table {
   constructor() {
+    this.visibleCards = new Deck();
+  }
 
+  playCard(card) {
+    this.visibleCards.addCard(card);
   }
 }

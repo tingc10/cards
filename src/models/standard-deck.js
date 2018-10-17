@@ -6,9 +6,11 @@ import {
 
 } from '../constants/card-meta';
 import { Card } from './card';
+import { Deck } from './deck';
 
-export class StandardDeck {
+export class StandardDeck extends Deck {
   constructor({ includeJoker = false } = {}) {
+    super();
     this.cards = StandardDeck.generateDeck(includeJoker);
     this.shuffleDeck();
     this.length = this.cards.length;
@@ -32,33 +34,5 @@ export class StandardDeck {
     return SPECIAL_CARD_TYPES.map((cardValue) => {
       return new Card({ ...cardValue, ...JOKER_CARD_VALUE });
     });
-  }
-
-  shuffleDeck() {
-    const newDeck = [];
-    while (this.cards.length) {
-      const card = this.getRandomCard();
-      newDeck.push(card);
-    }
-    this.cards = newDeck;
-  }
-
-  getRandomCard() {
-    const totalCards = this.cards.length;
-    const randomCardIndex = Math.floor(Math.random() * totalCards);
-    const card = this.cards.splice(randomCardIndex, 1)[0];
-    this.length = this.cards.length;
-    return card;
-  }
-
-  dealCardToPlayer(player) {
-    const card = this.cards.pop();
-    this.length = this.cards.length;
-    card.assignPlayer(player);
-    return card;
-  }
-
-  isEmpty() {
-    return !!(this.cards.length);
   }
 }
